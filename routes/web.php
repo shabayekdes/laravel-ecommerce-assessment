@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +24,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('categories', CategoryController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware(['auth', 'verified']);
+
+Route::resource('products', ProductController::class)
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
