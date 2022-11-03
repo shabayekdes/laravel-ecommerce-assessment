@@ -33,6 +33,12 @@ DB_PASSWORD=
 php artisan migrate --seed
 ```
 
+- Run storage link artisan to see upload images
+
+```bash
+php artisan storage:link
+```
+
 - Run server with 
 
 ```bash
@@ -47,3 +53,19 @@ php artisan serve
 email: test@example.com
 password: 12345678
 ```
+
+### Installation via Docker
+
+> make sure you install docker on local machine first 
+
+- run with laravel sail
+
+```bash
+./vendor/bin/sail up -d
+./vendor/bin/sail composer install
+./vendor/bin/sail artisan migrate --seed
+./vendor/bin/sail artisan storage:link
+```
+
+- open your browser and click on http://127.0.0.1:8000/
+
