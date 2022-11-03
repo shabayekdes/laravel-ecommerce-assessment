@@ -9,11 +9,16 @@
                 <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', $category->name)" required autofocus/>
                 <x-input-error :messages="$errors->get('name')" class="mt-2"/>
             </div>
-            <!-- Parent Name -->
+            <!-- Parent Category -->
             <div class="mt-4">
-                <x-input-label for="parent_name" :value="__('Parent Name')"/>
-                <x-text-input id="parent_name" class="block mt-1 w-full" type="text" name="parent_name" :value="old('parent_name', $category->parent_name)" autofocus/>
-                <x-input-error :messages="$errors->get('parent_name')" class="mt-2"/>
+                <x-input-label for="category" :value="__('Select Category')"/>
+                <select id="category" name="parent_id"
+                        class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                    <option value="">Select One</option>
+                    @foreach($categories as $value)
+                        <option @selected(old('category_id', $category->parent_id) == $value->id) value="{{ $value->id }}">{{ $value->name }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="mt-4 space-x-2">
                 <x-primary-button>{{ __('Update') }}</x-primary-button>

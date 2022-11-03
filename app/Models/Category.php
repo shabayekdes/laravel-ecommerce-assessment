@@ -11,4 +11,9 @@ class Category extends Model
 
     protected $fillable = [];
     protected $guarded = [];
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class);
+    }
 }

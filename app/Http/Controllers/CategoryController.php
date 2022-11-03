@@ -28,8 +28,11 @@ class CategoryController extends Controller
 
         $categories = Category::when($request->has('search'), function ($query) use ($search) {
                 $query->where('name', 'LIKE', "%$search%")
-                    ->orWhere('parent_name', 'LIKE', "%$search%");
-            })->latest()
+                    ->orWhereHas('parent', function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%$search%");
+                    });
+            })
+            ->latest()
             ->paginate();
 
         return view('categories.index', [
@@ -44,7 +47,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('categories.create', [
+            'categories' => Category::whereNull('parent_id')->get()
+        ]);
     }
 
     /**
@@ -57,7 +62,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|min:3',
-            'parent_name' => 'nullable|string|min:3'
+            'parent_id' => 'nullable|exists:categories,id',
         ]);
         Category::create($validated);
 
@@ -74,6 +79,7 @@ class CategoryController extends Controller
     {
         return view('categories.edit', [
             'category' => $category,
+            'categories' => Category::whereNull('parent_id')->get()
         ]);
     }
 
@@ -88,7 +94,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|min:3',
-            'parent_name' => 'nullable|string|min:3'
+            'parent_id' => 'nullable|exists:categories,id',
         ]);
 
         $category->update($validated);
